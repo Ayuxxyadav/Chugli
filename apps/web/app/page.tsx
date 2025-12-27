@@ -3,228 +3,165 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Shield } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
   const [roomName, setRoomName] = useState("");
+  const router = useRouter()
   return (
- <main className="bg-black text-white">
-      
-{/*HERO SECTION */}
-<section className="relative min-h-[87vh] flex items-center justify-center px-6 overflow-hidden bg-black">
-      
-      {/* Background Glow - Deep & Dynamic */}
-      <div className="absolute inset-0 flex justify-center pointer-events-none">
-        <div className="w-[600px] h-[500px] bg-blue-600/10 blur-[150px] rounded-full mt-[-150px]" />
-      </div>
+    <main className="bg-black text-white">
 
-      <div className="relative max-w-5xl   text-center">
-        {/* Floating Badge */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center mt-10 gap-2 px-4 py-1.5 mb-8 rounded-full border border-zinc-800 bg-zinc-900/40 backdrop-blur-md text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-500"
-        >
-          <Shield size={12} className="text-blue-500" />
-          End-to-End Encrypted Spaces
-        </motion.div>
+      {/*HERO SECTION */}
+<section className="relative min-h-[115vh] bg-black flex items-center justify-center px-6 overflow-hidden">
 
-        {/* Main Heading */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-3xl md:text-4xl  font-black leading-[0.9] tracking-tighter  text-white"
-        >
-          START YOUR PRIVATE <br /> 
-          <span className="text-blue-500 text-glow italic text-6xl md:text-8xl">CONVERSATION</span>
-        </motion.h1>
-
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-8 text-zinc-500 max-w-2xl mx-auto text-lg md:text-xl  font-medium"
-        >
-          No tracking. No ads. Just pure real-time connection. 
-          Enter a name and jump into your secure room instantly.
-        </motion.p>
-
-        {/* --- NEW CREATE ROOM SECTION --- */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-12 flex flex-col md:flex-row items-center justify-center gap-3 w-full max-w-2xl mx-auto"
-        >
-          <div className="relative w-full group">
-            <input 
-              type="text" 
-              placeholder="Give your room a name..." 
-              value={roomName}
-              onChange={(e) => setRoomName(e.target.value)}
-              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-6 py-5 outline-none focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/5 transition-all italic font-medium text-white placeholder:text-zinc-600"
-            />
-            <div className="absolute inset-0 rounded-2xl bg-blue-500/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity" />
-          </div>
-
-          <button 
-            className="w-full md:w-auto whitespace-nowrap bg-white text-black px-8 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-xl shadow-white/5"
-          >
-            <Plus size={16} strokeWidth={3} />
-            Create Room
-          </button>
-        </motion.div>
-
-        {/* Secondary Info */}
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-10 text-[13px] uppercase tracking-widest text-zinc-600 font-bold"
-        >
-          Press <span className="text-zinc-400">Enter</span> to create instantly
-        </motion.p>
-      </div>
-    </section>
-
-
-{/*FEATURES SECTION */}
-<section className="relative  px-6 overflow-hidden">
-  
-  {/* Background Glow */}
-  <div className="absolute inset-0 flex justify-center">
-    <div className="w-[400px] h-[400px] bg-blue-400/10 blur-[120px] rounded-full" />
+  {/* Blue ambient layers */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute top-[-300px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-blue-600/20 blur-[220px] rounded-full" />
+    <div className="absolute bottom-[-250px] right-[-200px] w-[700px] h-[700px] bg-blue-500/10 blur-[180px] rounded-full" />
   </div>
 
-  <div className="relative max-w-6xl mx-auto">
-    <h2 className="text-3xl md:text-4xl font-bold text-center">
-      Everything you need for{" "}
-      <span className="text-zinc-400">private chats</span>
-    </h2>
+  <div className="relative max-w-6xl text-center">
 
-    <p className="mt-3 text-zinc-400 text-center max-w-2xl mx-auto">
-      Powerful features designed for secure and seamless conversations.
+
+
+    {/* Main Heading */}
+    <h1 className="text-3xl md:text-6xl font-extrabold leading-tight tracking-tight text-white">
+
+       <span className="text-blue-500 text-3xl font-semibold tracking-widest">Welcome to</span>
+       <br /> <span className= "text-zinc-500 tracking-[0.2em] ">CHUGLI.</span>
+    </h1>
+
+    {/* Description */}
+    <p className="mt-8 max-w-3xl mx-auto text-lg md:text-xl font-light text-white-400 leading-relaxed">
+      <span className="text-zinc-400 font-semibold tracking-wider">Chugli</span> is an anonymous chat
+      platform where your identity stays hidden.<br/>
+      Join rooms using secure random codes <br />— no names, no profiles, no trace.
     </p>
 
-    <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-      {[
-        {
-          title: "Private Rooms",
-          desc: "Create invite-only rooms that only selected users can access.",
-          icon: "🔒",
-        },
-        {
-          title: "Secure Authentication",
-          desc: "Enterprise-grade security to protect your account and chats.",
-          icon: "🛡️",
-        },
-        {
-          title: "Real-Time Messaging",
-          desc: "Instant messaging with live typing indicators and zero lag.",
-          icon: "💬",
-        },
-        {
-          title: "Multi-User Support",
-          desc: "Unlimited participants for teams and communities.",
-          icon: "👥",
-        },
-      ].map((item) => (
-        <div
-          key={item.title}
-          className="
-            group relative rounded-2xl border border-zinc-700 
-            bg-gradient-to-b from-zinc-900/40 to-black
-            p-6 transition-all duration-300
-            hover:-translate-y-1 hover:border-blue-400/60
-            hover:shadow-[0_0_40px_rgba(96,165,250,0.15)]
-          "
-        >
-          <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-zinc-800 mb-4 group-hover:bg-blue-400/20 transition">
-            {item.icon}
-          </div>
+    {/* Feature Cards */}
+    <div className="mt-25 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
 
-          <h3 className="text-lg font-semibold">{item.title}</h3>
-          <p className="mt-2 text-zinc-400 text-sm">{item.desc}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-{/** How IT WORKS */}
-<section className="relative py-20 px-6 bg-black overflow-hidden">
+      <div className="group rounded-2xl border border-zinc-800 bg-zinc-900/40 p-7 
+        hover:border-blue-500/50 transition">
   
-  {/* Accent Line Glow */}
-  <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
-
-  <div className="relative max-w-6xl mx-auto">
-    
-    {/* Heading */}
-    <div className="text-center max-w-2xl mx-auto">
-      <h2 className="text-3xl md:text-4xl font-bold">
-        How <span className="text-zinc-400">BeeChat</span> works
-      </h2>
-      <p className="mt-3 text-zinc-400">
-        A simple flow designed for speed, privacy, and ease of use.
-      </p>
-    </div>
-
-    {/* Timeline */}
-    <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-
-      {/* Step */}
-      <div className="relative">
-        <div className="mx-auto w-12 h-12 rounded-full bg-blue-400 text-black font-bold flex items-center justify-center">
-          1
-        </div>
-        <h3 className="mt-6 text-lg font-semibold">Create a Room</h3>
-        <p className="mt-2 text-sm text-zinc-400">
-          Instantly create a private chat room with a unique name.
+        <h3 className="text-white font-bold tracking-wider mb-2">
+          Anonymous by Default
+        </h3>
+        <p className="text-zinc-400 text-sm leading-relaxed">
+          No usernames. No avatars. Only messages exist.
         </p>
       </div>
 
-      {/* Step */}
-      <div className="relative">
-        <div className="mx-auto w-12 h-12 rounded-full bg-blue-400 text-black font-bold flex items-center justify-center">
-          2
-        </div>
-        <h3 className="mt-6 text-lg font-semibold">Invite People</h3>
-        <p className="mt-2 text-sm text-zinc-400">
-          Share the room name with friends or teammates securely.
+      <div className="group rounded-2xl border border-zinc-800 bg-zinc-900/40 p-7 
+        hover:border-blue-500/50 transition">
+        
+        <h3 className="text-white font-bold tracking-wider mb-2 ">
+          Secure Room Codes
+        </h3>
+        <p className="text-zinc-400 text-sm leading-relaxed">
+          Each room is protected with a long, unguessable code.
         </p>
       </div>
 
-      {/* Step */}
-      <div className="relative">
-        <div className="mx-auto w-12 h-12 rounded-full bg-blue-400 text-black font-bold flex items-center justify-center">
-          3
-        </div>
-        <h3 className="mt-6 text-lg font-semibold">Start Chatting</h3>
-        <p className="mt-2 text-sm text-zinc-400">
-          Chat in real-time with full privacy and encryption.
+      <div className="group rounded-2xl border border-zinc-800 bg-zinc-900/40 p-7 
+        hover:border-blue-500/50 transition">
+        <h3 className="text-white font-bold  mb-2">
+          Real-Time Conversations
+        </h3>
+        <p className="text-zinc-400 text-sm leading-relaxed">
+          Instant messages with no delay and no identity leakage.
         </p>
       </div>
 
     </div>
+
+    {/* Bottom Philosophy */}
+    <p className="mt-30 text-shadow-xs uppercase tracking-[0.4em] text-blue-500/70">
+      Privacy is the feature
+    </p>
+
   </div>
 </section>
 
-{/** FREQUENTLY ASKED Q */}
-<section className="relative py-20 px-6 overflow-hidden bg-black text-white">
+
+
+
+
+      {/*FEATURES SECTION */}
+
+
+      {/**HoW Chugli Works */}
+      <section className="relative py-24 px-6 bg-black overflow-hidden border-t border-zinc-900">
+        <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent hidden md:block" />
+
+        <div className="relative max-w-6xl mx-auto">
+
+          {/* Heading */}
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              How <span className="text-zinc-500">Chugli</span> works
+            </h2>
+            <p className="mt-4 text-zinc-500 font-medium">
+              A simple flow designed for speed, privacy, and ease of use.
+            </p>
+          </div>
+          {/* Timeline Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 text-center relative">
+
+            <div className="group relative">
+              <div className="relative z-10 mx-auto w-14 h-14 rounded-full bg-blue-500 text-black font-black text-xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110">
+                1
+              </div>
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-white uppercase tracking-tight">Create a Room</h3>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed max-w-[250px] mx-auto">
+                  Instantly create a private chat room with a unique name.
+                </p>
+              </div>
+            </div>
+            <div className="group relative">
+              <div className="relative z-10 mx-auto w-14 h-14 rounded-full bg-blue-500 text-black font-black text-xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110">
+                2
+              </div>
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-white uppercase tracking-tight">Invite People</h3>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed max-w-[250px] mx-auto">
+                  Share the room name with friends or teammates securely.
+                </p>
+              </div>
+            </div>
+            <div className="group relative">
+              <div className="relative z-10 mx-auto w-14 h-14 rounded-full bg-blue-500 text-black font-black text-xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110">
+                3
+              </div>
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-white uppercase tracking-tight">Start Chatting</h3>
+                <p className="mt-3 text-sm text-zinc-500 leading-relaxed max-w-[250px] mx-auto">
+                  Chat in real-time with full privacy and encryption.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+{/* FREQUENTLY ASKED QUESTIONS - Native CSS Version */}
+<section className="relative py-24 px-6 overflow-hidden bg-black text-white">
   {/* Background Glow Effect */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
     <div className="w-[500px] h-[500px] bg-blue-500/5 blur-[150px] rounded-full" />
   </div>
 
   <div className="relative max-w-3xl mx-auto">
     {/* Heading */}
     <div className="text-center mb-16">
-      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+      <h2 className="text-3xl md:text-4xl font-bold tracking-tight uppercase ">
         Frequently Asked <span className="text-blue-400">Questions</span>
       </h2>
-      <p className="mt-4 text-zinc-400">
-        Everything you need to know about BeeChat's privacy and real-time security.
+      <p className="mt-4 text-zinc-500 font-medium">
+        Everything you need to know about Chugli's privacy and real-time security.
       </p>
     </div>
 
@@ -232,11 +169,11 @@ export default function Home() {
     <div className="space-y-4">
       {[
         {
-          q: "Is BeeChat really private?",
-          a: "Yes. BeeChat is built on a 'Privacy-First' architecture. We don't track your personal data or sell your information to advertisers. Your rooms are yours alone.",
+          q: "Is Chugli really private?",
+          a: "Yes. Chugli is built on a 'Privacy-First' architecture. We don't track your personal data or sell your information to advertisers. Your rooms are yours alone.",
         },
         {
-          q: "How does BeeChat maintain real-time speed without compromising security?",
+          q: "How does Chugli maintain real-time speed without compromising security?",
           a: "We use optimized WebSockets combined with enterprise-grade encryption. This ensures your messages are delivered instantly (zero lag) while remaining protected during transit.",
         },
         {
@@ -249,20 +186,20 @@ export default function Home() {
         },
         {
           q: "Are my messages stored forever?",
-          a: "BeeChat focuses on real-time communication. You have the control to manage your conversations, and we are continuously working on features like auto-delete for enhanced privacy.",
+          a: "Chugli focuses on real-time communication. You have the control to manage your conversations, and we are continuously working on features like auto-delete for enhanced privacy.",
         },
       ].map((faq, index) => (
         <details
           key={index}
           className="group rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm transition-all duration-300 hover:border-zinc-700"
         >
-          <summary className="flex cursor-pointer items-center justify-between p-6 list-none">
-            <h3 className="text-lg font-medium text-zinc-200 group-hover:text-white transition-colors">
+          <summary className="flex cursor-pointer items-center justify-between p-6 list-none outline-none">
+            <h3 className="text-lg font-medium text-zinc-300 group-hover:text-white transition-colors duration-200">
               {faq.q}
             </h3>
             <span className="ml-4 flex-shrink-0 transition-transform duration-300 group-open:rotate-180">
               <svg
-                className="h-5 w-5 text-zinc-500"
+                className="h-5 w-5 text-zinc-500 group-hover:text-blue-400 transition-colors"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -276,7 +213,7 @@ export default function Home() {
               </svg>
             </span>
           </summary>
-          <div className="px-6 pb-6 text-zinc-400 text-sm leading-relaxed">
+          <div className="px-6 pb-6 text-zinc-500 text-sm leading-relaxed border-t border-zinc-800/50 pt-4 mt-2 transition-all">
             {faq.a}
           </div>
         </details>
@@ -284,62 +221,79 @@ export default function Home() {
     </div>
   </div>
 </section>
+   
 
 
-{/* Footer section */}
-<footer className="border-t border-zinc-800 bg-black py-10 px-6">
-  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-zinc-400">
+      {/* Footer section */}
+     
+<footer className="border-t border-zinc-900 bg-black py-16 px-6 relative overflow-hidden">
+  {/* Subtle bottom glow */}
+  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+
+  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-sm text-zinc-500">
     
     {/* LEFT: BRAND */}
-    <div>
-      <h2 className="text-lg font-semibold text-white">BeeChat</h2>
-      <p className="mt-2 max-w-xs">
-        Secure conversations. Private rooms built for modern communication.
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        
+        <h2 className="text-xl font-black text-white tracking-tighter uppercase">
+          Chugli
+        </h2>
+      </div>
+      <p className="leading-relaxed max-w-xs font-medium">
+        Encrypted conversations. Private rooms built for the next generation of secure communication.
       </p>
-      <p className="mt-4 text-xs">
-        © {new Date().getFullYear()} BeeChat
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-700">
+        © {new Date().getFullYear()} Chugli 
       </p>
     </div>
 
     {/* MIDDLE: LINKS */}
-    <div>
-      <h3 className="text-white font-medium mb-3">BeeChat Links</h3>
-      <ul className="space-y-2">
+    <div className="md:pl-10">
+      <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-6 ">
+        Navigation
+      </h3>
+      <ul className="space-y-3">
         <li>
-          <Link href="/" className="hover:text-white transition">
+          <Link href="/" className="hover:text-blue-400 transition-colors duration-200 flex items-center gap-2 group">
+            <span className="w-0 h-px bg-blue-400 group-hover:w-3 transition-all" />
             Home
           </Link>
         </li>
         <li>
-          <Link href="/dashboard" className="hover:text-white transition">
+          <Link href="/dashboard" className="hover:text-blue-400 transition-colors duration-200 flex items-center gap-2 group">
+            <span className="w-0 h-px bg-blue-400 group-hover:w-3 transition-all" />
             Dashboard
           </Link>
         </li>
-
       </ul>
     </div>
 
     {/* RIGHT: LEGAL */}
-    <div>
-      <h3 className="text-white font-medium mb-3">Legal</h3>
-      <ul className="space-y-2">
+    <div className="md:pl-10">
+      <h3 className="text-white font-bold uppercase tracking-widest text-xs mb-6 ">
+        Security
+      </h3>
+      <ul className="space-y-3">
         <li>
-          <Link href="/terms" className="hover:text-white transition">
+          <Link href="/terms" className="hover:text-white transition-colors duration-200">
             Terms & Conditions
           </Link>
         </li>
         <li>
-          <Link href="/privacy" className="hover:text-white transition">
+          <Link href="/privacy" className="hover:text-white transition-colors duration-200">
             Privacy Policy
           </Link>
         </li>
-
+        <li className="text-[10px] text-zinc-800 font-mono mt-4">
+          STATUS: ALL_SYSTEMS_OPERATIONAL
+        </li>
       </ul>
     </div>
 
   </div>
 </footer>
 
-  </main>
+    </main>
   );
 }
