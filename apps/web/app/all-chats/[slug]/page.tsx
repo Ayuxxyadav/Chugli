@@ -65,74 +65,84 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="h-screen bg-black flex flex-col items-center justify-center font-mono selection:bg-zinc-800">
+    <div className="h-screen bg-[#050505] flex flex-col items-center justify-center font-mono selection:bg-white selection:text-black">
       
-      {/* SECRET CONTAINER */}
-      <div className="w-full max-w-3xl h-full md:h-[85vh] flex flex-col p-6">
+      {/* MAIN CHAT CONTAINER */}
+      <div className="w-full max-w-3xl h-full md:h-[70vh] flex flex-col p-6">
         
-        {/* MINIMAL HEADER */}
-        <header className="mb-10 flex items-center justify-between opacity-40 hover:opacity-100 transition-opacity">
-          <div className="flex items-center gap-2">
-            <Shield size={14} className="text-zinc-500" />
-            <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
-              Encrypted Session: {slug}
+        {/* HEADER - CLEAN & BOLD */}
+        <header className="mb-12 flex items-center justify-between border-b border-zinc-900 pb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <span className="text-[11px] uppercase tracking-[0.4em] font-black text-white">
+              ROOM // {slug}
             </span>
           </div>
-          <span className="text-[10px] text-zinc-700">VOID_PROTOCOL_V1</span>
+          <div className="flex items-center gap-2 opacity-30">
+            <Shield size={12} />
+            <span className="text-[9px] uppercase tracking-widest font-bold">Secure Relay</span>
+          </div>
         </header>
 
-        {/* MESSAGE FEED - NO NAMES, JUST TEXT & DATE */}
-        <main className="flex-1 overflow-y-auto space-y-8 custom-scrollbar pr-4">
+        {/* MESSAGE FEED */}
+        <main className="flex-1 overflow-y-auto space-y-10 scrollbar-hide pr-2">
           {chats.map((m, i) => (
-            <div key={i} className="group animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="flex flex-col gap-1">
-                {/* MESSAGE TEXT */}
-                <p className="text-zinc-300 text-sm md:text-base leading-relaxed tracking-tight break-words">
+            <div key={i} className="group transition-opacity duration-300">
+              <div className="flex flex-col gap-2">
+                {/* MESSAGE TEXT - REMOVED ITALIC */}
+                <p className="text-zinc-200 text-sm md:text-base leading-relaxed tracking-normal font-medium break-words max-w-2xl">
                   {m.message}
                 </p>
                 
-                {/* DATE / TIME (Visible on Hover or very subtle) */}
-<span className="text-[9px] text-zinc-800 group-hover:text-zinc-600 transition-colors uppercase font-bold">
-  {(() => {
-    const date = m.createdAt ? new Date(m.createdAt) : new Date();
-    // Agar date phir bhi invalid ho (NaN), toh current time dikha do
-    return isNaN(date.getTime()) 
-      ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-      : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  })()}
-</span>
+                {/* TIMESTAMP - ONLY VISIBLE ON HOVER */}
+                <span className="text-[8px] text-zinc-800 group-hover:text-zinc-500 transition-colors uppercase font-bold tracking-tighter">
+                  {(() => {
+                    const date = m.createdAt ? new Date(m.createdAt) : new Date();
+                    return isNaN(date.getTime()) 
+                      ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                      : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                  })()}
+                </span>
               </div>
             </div>
           ))}
           <div ref={scrollRef} />
         </main>
 
-        {/* GHOST INPUT */}
-        <footer className="mt-6 border-t border-zinc-900 pt-6">
-          <div className="flex items-center gap-4 bg-zinc-950/50 p-2 rounded-lg group">
+        {/* GHOST INPUT - FLAT DESIGN */}
+        <footer className="mt-8">
+          <div className="flex items-center gap-4 bg-zinc-900/30 border border-zinc-900 px-4 py-3 rounded-xl focus-within:border-zinc-700 transition-all">
             <input
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Write into the void..."
-              className="flex-1 bg-transparent px-2 py-2 outline-none text-zinc-400 text-sm placeholder:text-zinc-800 italic"
+              placeholder="SEND MESSAGE..."
+              className="flex-1 bg-transparent outline-none text-white text-xs font-bold tracking-widest placeholder:text-zinc-800 uppercase"
             />
             <button
               onClick={sendMessage}
-              className="p-2 text-zinc-700 hover:text-white transition-colors"
+              className="p-1 text-zinc-600 hover:text-white transition-colors active:scale-90"
             >
-              <Send size={16} />
+              <Send size={18} strokeWidth={2.5} />
             </button>
+          </div>
+          <div className="mt-4 text-center">
+             <span className="text-[8px] text-zinc-800 uppercase tracking-[0.3em] font-black">
+               Chugli Protocol Active
+             </span>
           </div>
         </footer>
       </div>
 
       <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #18181b; }
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
         }
       `}</style>
     </div>

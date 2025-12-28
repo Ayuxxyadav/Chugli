@@ -1,312 +1,200 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Copy, CheckCircle2 } from "lucide-react";
-import { 
-  PlusCircle, 
-  LogIn, 
-  History, 
-  Trash2, 
-  MessageSquare, 
-  Hash, 
-
-} from "lucide-react";
-
-import { motion, AnimatePresence } from "framer-motion";
+import { Copy, CheckCircle2, PlusCircle, LogIn, History, Trash2, Hash, MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-
 
 interface Room {
   id: number | string;
   slug: string;
   adminId: string;
-
 }
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<"create" | "join">("create");
-  const router = useRouter()
-  const [createRoom , setcreateRoom] = useState("");
-  const [allRooms,setAllRooms] = useState<Room[]>([]);
-  const [roomId,setRoomId] = useState("")
-
-
-
-
+  const router = useRouter();
+  const [createRoom, setcreateRoom] = useState("");
+  const [allRooms, setAllRooms] = useState<Room[]>([]);
+  const [roomId, setRoomId] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-const handleCopy = (id: string) => {
-  navigator.clipboard.writeText(id);
-  setCopiedId(id);
-  
-  // 2 second baad feedback hata dein
-  setTimeout(() => setCopiedId(null), 2000);
-};
+  const handleCopy = (id: string) => {
+    navigator.clipboard.writeText(id);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
+  const fetchAllRoomData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return router.push("/signup");
+    try {
+      const res = await axios.get(`${BACKEND_URL}/allrooms`, {
+        headers: { Authorization: token },
+      });
+      setAllRooms(res.data.allRooms);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+  useEffect(() => {
+    fetchAllRoomData();
+  }, []);
 
-    const fetchAllRoomData = async () => {
-           const token = localStorage.getItem("token")
-            if(!token){return router.push("/signup")}
-            const res = await axios.get(`${BACKEND_URL}/allrooms`,{
-            headers:{
-                Authorization:token
-            }
-        });
-        setAllRooms(res.data.allRooms)
-
-    } 
-
-useEffect(() => {
-  fetchAllRoomData();
-}, []);
-    
-    async function handleCreateRoom(){
-    const token = localStorage.getItem("token")
-
-    const res = await axios.post(`${BACKEND_URL}/room`,
-        {
-            name:createRoom
-        },{
-            headers:{
-                Authorization:`${token}`
-            }
-        }
-    )
-    fetchAllRoomData()
+  async function handleCreateRoom() {
+    const token = localStorage.getItem("token");
+    if (!createRoom.trim()) return;
+    try {
+      await axios.post(`${BACKEND_URL}/room`, { name: createRoom }, {
+        headers: { Authorization: `${token}` }
+      });
+      setcreateRoom("");
+      fetchAllRoomData();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-
-
-   
-
-
   return (
-    <div className="flex min-h-screen py-25 bg-zinc-950 text-zinc-200">
+    <div className="flex min-h-screen bg-black text-zinc-400 font-sans selection:bg-white selection:text-black">
       
-      {/* --- LEFT SIDEBAR --- */}
-      <aside className="w-64 border-r border-zinc-800 bg-zinc-900/30 backdrop-blur-xl p-6 flex flex-col gap-8">
+      {/* --- SIDEBAR --- */}
+      <aside className="w-64 border-r border-zinc-900 bg-[#050505] p-6 flex flex-col gap-8">
+        <div className="py-10">
+          <span className="text-xs tracking-[0.4em] font-black text-white uppercase italic">Chugli // DB</span>
+        </div>
 
-
-        <nav className="flex flex-col py-20 gap-2">
+        <nav className="flex flex-col gap-2">
           <button 
             onClick={() => setActiveTab("create")}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === "create" ? "bg-blue-600 text-white" : "hover:bg-zinc-800 text-zinc-400"}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-xs font-bold uppercase tracking-widest ${activeTab === "create" ? "bg-white text-black" : "hover:bg-zinc-900 text-zinc-500"}`}
           >
-            <PlusCircle size={18} />
-            <span className="text-sm font-medium">Create Room</span>
+            <PlusCircle size={16} />
+            Create
           </button>
           
           <button 
             onClick={() => setActiveTab("join")}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === "join" ? "bg-blue-600 text-white" : "hover:bg-zinc-800 text-zinc-400"}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-xs font-bold uppercase tracking-widest ${activeTab === "join" ? "bg-white text-black" : "hover:bg-zinc-900 text-zinc-500"}`}
           >
-            <LogIn size={18} />
-            <span className="text-sm font-medium">Join Room</span>
+            <LogIn size={16} />
+            Join
           </button>
         </nav>
 
-        <div className="mt-auto p-4 rounded-2xl bg-zinc-800/40 border border-zinc-700/50">
-          <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-2">Pro Tip</p>
-          <p className="text-xs text-zinc-400 leading-relaxed">Share Room IDs only with people you trust.</p>
+        <div className="mt-auto p-4 rounded-xl border border-zinc-900 bg-zinc-950">
+          <p className="text-[9px] uppercase tracking-widest text-zinc-600 font-black mb-2">Protocol</p>
+          <p className="text-[11px] text-zinc-500 leading-relaxed">Identity is hidden. Rooms are ephemeral.</p>
         </div>
       </aside>
 
-      {/* --- MAIN CONTENT AREA --- */}
-      <main className="flex-1 p-10 overflow-y-auto">
-        <AnimatePresence mode="wait">
-          {activeTab === "create" ? (
-            <motion.div 
-              key="create-section"
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              className="max-w-4xl"
-            >
-              <h1 className="text-3xl font-bold text-white mb-2 italic">Create Room</h1>
-              <p className="text-zinc-500 mb-8">Start a new private conversation space.</p>
+      {/* --- MAIN CONTENT --- */}
+      <main className="flex-1 p-12 overflow-y-auto">
+        
+        {activeTab === "create" ? (
+          <div className="max-w-4xl transition-all duration-500">
+            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Create Room</h1>
+            <p className="text-sm text-zinc-600 mb-10 font-medium">Initialize a new secure relay station.</p>
 
-
-
-
-              <div className="flex gap-4 mb-12">
-                <input 
-                  type="text" 
-                  placeholder="Enter room name..." 
-                  className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500 transition-all"
-                  value={createRoom} 
-                  onChange={(e)=>
-                    {setcreateRoom(e.target.value)}
-                }
-                />
-                <button className="bg-white text-black px-6 py-3 rounded-xl font-bold hover:bg-zinc-200 transition-all"
-                onClick={()=>{handleCreateRoom(),setcreateRoom("")}
-                
-                }
-                >
-                  Create
-                </button>
-              </div>
-
-
- <div className="mt-8 space-y-4">
-  <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-zinc-500 mb-4">
-    <History size={16} className="text-blue-500" />
-    Previously Created
-  </h2>
-
-  {/* SCROLL BOX START */}
-  <div className="relative w-full rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-xl overflow-hidden shadow-2xl">
-    <div className="max-h-[500px] overflow-y-auto p-4 space-y-3 custom-scrollbar">
-      
-      {allRooms && allRooms.length > 0 ? (
-        allRooms.map((room) => (
-          <div
-          //@ts-ignore
-            key={room.id}
-            className="group relative flex items-center justify-between p-4 bg-zinc-900/60 border border-zinc-800 rounded-2xl hover:border-blue-500/20 hover:bg-zinc-800/40 transition-all duration-300"
-          >
-
-
-
-
-
-<div className="flex items-center gap-4">
-  {/* Room Icon */}
-  <div className="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-    <Hash size={20} />
-  </div>
-
-  <div>
-    <h3 className="text-md font-bold text-white italic tracking-tight uppercase">
-     
-      { room.slug}
-    </h3>
-    
-    {/* CLICKABLE ID SECTION */}
-    <div 
-      onClick={() => handleCopy(String(room.id))}
-      className="flex items-center gap-2 cursor-pointer group/id"
-    >
-      <p className="text-[10px] font-mono text-zinc-500 uppercase group-hover/id:text-blue-400 transition-colors">
-        ID: {String(room.id)}
-      </p>
-      
-      {/* Dynamic Icon based on copy state */}
-      
-      {copiedId === (room.id) ? (
-        <CheckCircle2 size={10} className="text-green-500 animate-bounce" />
-      ) : (
-        <Copy size={10} className="text-zinc-600 opacity-0 group-hover/id:opacity-100 transition-all" />
-      )}
-      
-      {/* Tooltip (Optional) */}
-      {copiedId === String(room.id) && (
-        <span className="text-[8px] text-green-500 font-bold uppercase tracking-tighter">Copied!</span>
-      )}
-    </div>
-  </div>
-</div>
-
-
-
-
-
-             <div className="flex items-center gap-3">
-              <button className="p-2 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all">
-                <Trash2 size={16} />
+            <div className="flex flex-col md:flex-row gap-3 mb-16 max-w-2xl">
+              <input 
+                type="text" 
+                placeholder="ROOM_IDENTIFIER..." 
+                className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 outline-none focus:border-zinc-500 transition-colors font-mono text-sm text-white uppercase tracking-widest"
+                value={createRoom} 
+                onChange={(e) => setcreateRoom(e.target.value)}
+              />
+              <button 
+                className="bg-white text-black px-10 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-zinc-200 active:scale-95 transition-all"
+                onClick={handleCreateRoom}
+              >
+                Initialize
               </button>
             </div>
-          </div>
-        ))
-      ) : (
-        <div className="py-20 text-center">
-          <p className="text-zinc-600 italic text-sm">No rooms found in your history.</p>
-        </div>
-      )}
-    </div>
-    
-    {/* Bottom Fade Effect (Optional) */}
-    <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-zinc-950 to-transparent pointer-events-none" />
-  </div>
-  {/* SCROLL BOX END */}
 
-  <style jsx>{`
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #27272a; /* zinc-800 */
-      border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #3f3f46; /* zinc-700 */
-    }
-  `}</style>
-     </div>
-
-            </motion.div>
-          )   : 
-          (
-            <motion.div 
-              key="join-section"
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              className="max-w-4xl"
-            >
-              <h1 className="text-3xl font-bold text-white mb-2 italic">Join Room</h1>
-              <p className="text-zinc-500 mb-8">Enter a Room ID to participate in a chat.</p>
-
-              <div className="flex gap-4 mb-12">
-                <input 
-                  type="text" 
-                  placeholder="Paste Room ID here (e.g. room_123)..." 
-                  className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500 transition-all font-mono"
-                  value={roomId} onChange={(e)=>setRoomId((e.target.value))}
-                />
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all"
-                onClick={()=>router.push(`/all-chats/${roomId}`)}
-                >
-                  Join
-                </button>
-              </div>
-
-              <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-zinc-500 mb-6">
-                <MessageSquare size={16} /> Recent Chats
+            <div className="space-y-6">
+              <h2 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700">
+                <History size={14} /> Registry History
               </h2>
-              
 
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <div className="rounded-2xl border border-zinc-900 bg-zinc-950 overflow-hidden">
+                <div className="max-h-[500px] overflow-y-auto p-2 space-y-1 scrollbar-hide">
+                  {allRooms && allRooms.length > 0 ? (
+                    allRooms.map((room) => (
+                      <div key={room.id} className="group flex items-center justify-between p-4 hover:bg-zinc-900/50 rounded-xl transition-colors">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center text-zinc-600 group-hover:text-blue-500 transition-colors">
+                            <Hash size={18} />
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-bold text-zinc-200 uppercase tracking-tight">{room.slug}</h3>
+                            <div onClick={() => handleCopy(String(room.id))} className="flex items-center gap-2 cursor-pointer mt-1">
+                              <span className="text-[9px] font-mono text-zinc-700 group-hover:text-zinc-500 uppercase transition-colors tracking-tighter">
+                                SIGNATURE: {String(room.id)}
+                              </span>
+                              {copiedId === room.id ? (
+                                <span className="text-[8px] text-green-500 font-black tracking-widest animate-pulse">COPIED</span>
+                              ) : (
+                                <Copy size={10} className="text-zinc-800 opacity-0 group-hover:opacity-100" />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <button 
+                                onClick={() => router.push(`/chat/${room.slug}`)}
+                                className="text-[10px] font-black uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+                            >
+                                Open Relay
+                            </button>
+                            <button className="p-2 text-zinc-800 hover:text-red-500 transition-colors">
+                                <Trash2 size={14} />
+                            </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="py-20 text-center text-xs uppercase tracking-widest text-zinc-800 font-bold">
+                      No active stations found.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="max-w-4xl">
+            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Join Room</h1>
+            <p className="text-sm text-zinc-600 mb-10 font-medium">Sync with an existing encrypted tunnel.</p>
+
+            <div className="flex flex-col md:flex-row gap-3 mb-16 max-w-2xl">
+              <input 
+                type="text" 
+                placeholder="PASTE_SIGNATURE..." 
+                className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 outline-none focus:border-zinc-500 transition-colors font-mono text-sm text-white uppercase tracking-widest"
+                value={roomId} 
+                onChange={(e) => setRoomId(e.target.value)}
+              />
+              <button 
+                className="bg-blue-600 text-white px-10 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-xl shadow-blue-900/10"
+                onClick={() => router.push(`/chat/${roomId}`)}
+              >
+                Establish Link
+              </button>
+            </div>
+
+            <h2 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700">
+              <MessageSquare size={14} /> Active Intercepts
+            </h2>
+          </div>
+        )}
       </main>
-    </div>
-  );
-}
 
-// Reusable Room Card Component
-function RoomCard({ room, onDelete }: { room: any; onDelete: () => void }) {
-  return (
-    <div className="group flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:border-zinc-700 transition-all">
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 group-hover:bg-blue-500/10 group-hover:text-blue-500 transition-colors">
-          <Hash size={20} />
-        </div>
-        <div>
-          <h3 className="font-semibold text-zinc-200">{room.name}</h3>
-          <p className="text-xs text-zinc-500 font-mono">{room.id} • {room.date}</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <button className="px-4 py-2 text-xs font-bold bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors">Open Chat</button>
-        <button 
-          onClick={onDelete}
-          className="p-2 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
-        >
-          <Trash2 size={18} />
-        </button>
-      </div>
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </div>
   );
 }
