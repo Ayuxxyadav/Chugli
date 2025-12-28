@@ -1,4 +1,4 @@
- Chugli
+ 
  Chugli is a high-performance monorepo built with Turbo Repo. This project manages multiple applications and shared packages seamlessly using a modern tech stack.
 
 🛠 Prerequisites
