@@ -57,12 +57,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-black text-zinc-400 font-sans selection:bg-white selection:text-black">
+    <div className="flex min-h-screen py-12 bg-black text-zinc-400 font-sans selection:bg-white selection:text-black">
       
       {/* --- SIDEBAR --- */}
       <aside className="w-64 border-r border-zinc-900 bg-[#050505] p-6 flex flex-col gap-8">
         <div className="py-10">
-          <span className="text-xs tracking-[0.4em] font-black text-white uppercase italic">Chugli // DB</span>
+          <span className="text-xs tracking-[0.4em] font-black text-white uppercase ">Chugli</span>
         </div>
 
         <nav className="flex flex-col gap-2">
@@ -85,7 +85,7 @@ export default function Dashboard() {
 
         <div className="mt-auto p-4 rounded-xl border border-zinc-900 bg-zinc-950">
           <p className="text-[9px] uppercase tracking-widest text-zinc-600 font-black mb-2">Protocol</p>
-          <p className="text-[11px] text-zinc-500 leading-relaxed">Identity is hidden. Rooms are ephemeral.</p>
+          <p className="text-[11px] text-zinc-500 leading-relaxed">Do not share Room id Publicly.</p>
         </div>
       </aside>
 
@@ -94,13 +94,13 @@ export default function Dashboard() {
         
         {activeTab === "create" ? (
           <div className="max-w-4xl transition-all duration-500">
-            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Create Room</h1>
-            <p className="text-sm text-zinc-600 mb-10 font-medium">Initialize a new secure relay station.</p>
+            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter">Create Room</h1>
+            <p className="text-sm text-zinc-600 mb-10 font-medium">Initialize a new secure Room.</p>
 
             <div className="flex flex-col md:flex-row gap-3 mb-16 max-w-2xl">
               <input 
                 type="text" 
-                placeholder="ROOM_IDENTIFIER..." 
+                placeholder="ENTER ROOM NAME " 
                 className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 outline-none focus:border-zinc-500 transition-colors font-mono text-sm text-white uppercase tracking-widest"
                 value={createRoom} 
                 onChange={(e) => setcreateRoom(e.target.value)}
@@ -142,12 +142,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            <button 
-                                onClick={() => router.push(`/chat/${room.slug}`)}
-                                className="text-[10px] font-black uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
-                            >
-                                Open Relay
-                            </button>
+         
                             <button className="p-2 text-zinc-800 hover:text-red-500 transition-colors">
                                 <Trash2 size={14} />
                             </button>
@@ -165,7 +160,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="max-w-4xl">
-            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Join Room</h1>
+            <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter">Join Room</h1>
             <p className="text-sm text-zinc-600 mb-10 font-medium">Sync with an existing encrypted tunnel.</p>
 
             <div className="flex flex-col md:flex-row gap-3 mb-16 max-w-2xl">
@@ -178,7 +173,7 @@ export default function Dashboard() {
               />
               <button 
                 className="bg-blue-600 text-white px-10 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-xl shadow-blue-900/10"
-                onClick={() => router.push(`/chat/${roomId}`)}
+                onClick={() => router.push(`/all-chats/${roomId}`)}
               >
                 Establish Link
               </button>

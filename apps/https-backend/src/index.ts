@@ -6,8 +6,7 @@ import { prismaClient} from "@repo/db/client";
 import bcrypt from "bcrypt";
 
 import cors from "cors"
-import dotenv from "dotenv";
-dotenv.config({ path: "../../.env" })
+import {JWT_SECRET} from "@repo/backendcommon/config"
 
 const app = express();
 const port = 3005;
@@ -83,9 +82,8 @@ app.post("/signin", async (req, res) => {
         message: "InCorrect password "
       });
     }
-    
-     const secret = process.env.JWT_SECRET!
-    const token = jwt.sign({ userId: user.id },secret);
+  
+    const token = jwt.sign({ userId: user.id },JWT_SECRET);
 
     return res.json({ token });
 
