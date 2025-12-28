@@ -1,11 +1,13 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "@repo/backendcommon/config";
 import { middleware } from "./middleware";
 import { signInSchema, signUpSchema, roomSchema } from "@repo/common/zod";
 import { prismaClient} from "@repo/db/client";
 import bcrypt from "bcrypt";
+
 import cors from "cors"
+import dotenv from "dotenv";
+dotenv.config({ path: "../../.env" })
 
 const app = express();
 const port = 3005;
@@ -70,7 +72,7 @@ app.post("/signin", async (req, res) => {
 
     if (!user) {
       return res.status(403).json({
-        message: "Invalid credential"
+        message: "Email already exist"
       });
     }
 
@@ -78,11 +80,12 @@ app.post("/signin", async (req, res) => {
 
     if (!isPasswordCorrect) {
       return res.status(403).json({
-        message: "Invalid "
+        message: "InCorrect password "
       });
     }
-
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+    
+     const secret = process.env.JWT_SECRET!
+    const token = jwt.sign({ userId: user.id },secret);
 
     return res.json({ token });
 
