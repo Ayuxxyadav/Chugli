@@ -27,7 +27,7 @@ out/
 build
 dist
 
-packages/backendCommon/
+packages/backendCommon/src/index.ts/
 
 # Debug
 npm-debug.log*
