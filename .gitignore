@@ -27,7 +27,7 @@ out/
 build
 dist
 
-backendCommon
+packages/backendCommon/
 
 # Debug
 npm-debug.log*
